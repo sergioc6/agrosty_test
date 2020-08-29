@@ -1,39 +1,38 @@
 @extends('base.index')
 
 @section('title', 'Mails')
-@section('subtitle', 'List of mails')
+@section('subtitle', 'List of mails grouping')
 
 @section('content')
 
     <div class="container">
-        @include('mails.actions')
+
+        <a href="{{ route('mails.index') }}" class="btn btn-defailt">Go back</a>
+        <br>
+        <label>Totales: {{ $totals }}</label>
 
         <div class="row">
             <table class="table">
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">To</th>
                     <th scope="col">Subject</th>
-                    <th scope="col">Date</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Percentage</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($mails as $mail)
+                @foreach($mailsList as $mail)
                     <tr>
                         <th scope="row">{{ $mail->id }}</th>
-                        <td>{{ $mail->to }}</td>
-                        <td>{{ $mail->subject->desc }}</td>
-                        <td>{{ $mail->created_at->format('d-m-Y') }}</td>
-                        <td>@include('mails.actions-list', ['id' => $mail->id])</td>
+                        <td>{{ $mail->desc }}</td>
+                        <td>{{ $mail->cant }}</td>
+                        <td>{{ $mail->cant/$totals*100 }}%</td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
         </div>
-
-        {{ $mails->links() }}
 
     </div>
 

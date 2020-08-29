@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MailsExport;
+use App\Http\Requests\MailPost;
 use App\Mail\AgrostyMail;
 use App\Models\Mail;
+use App\Models\Subject;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MailController extends Controller
 {
@@ -12,9 +18,18 @@ class MailController extends Controller
      * Display a listing of the resource.
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $mails = Mail::paginate();
+        $qb = Mail::with('subject');
+
+        if (isset($request->orderDesc)) {
+            $qb->orderBy('created_at', 'DESC');
+        }
+        if (isset($request->orderAsc)) {
+            $qb->orderBy('created_at', 'ASC');
+        }
+
+        $mails = $qb->paginate();
 
         return view('mails.index',
             ['mails' => $mails]);
@@ -26,7 +41,8 @@ class MailController extends Controller
      */
     public function create()
     {
-        return view('mails.create');
+        $subjects = Subject::all();
+        return view('mails.create', ['subjects' => $subjects]);
     }
 
     /**
@@ -34,10 +50,14 @@ class MailController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(MailPost $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
+        $data['to'] = env('MAIL_TO_ADDRESS', 'other_company@agrosty.com');
         $mail = Mail::create($data);
+
+        \Illuminate\Support\Facades\Mail::to($mail->to)
+            ->send(new AgrostyMail($mail));
 
         return redirect()->action('MailController@index');
     }
@@ -59,7 +79,8 @@ class MailController extends Controller
      */
     public function edit(Mail $mail)
     {
-        return view('mails.edit', ['mail' => $mail]);
+        $subjects = Subject::all();
+        return view('mails.edit', ['mail' => $mail, 'subjects' => $subjects]);
     }
 
     /**
@@ -109,5 +130,43 @@ class MailController extends Controller
         } else {
             return redirect()->action('MailController@index');
         }
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function listGroup()
+    {
+        $totals = Mail::count();
+        $mailsList = DB::select("
+            SELECT s.id, s.desc, count(m.id) as cant
+            FROM subjects s
+            LEFT JOIN mails m on s.id = m.subject_id
+            GROUP BY s.id, s.desc
+        ");
+
+        return view('mails.list-grouping',
+            ['mailsList' => $mailsList,
+                'totals' => $totals
+            ]);
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function getExcel(Request $request)
+    {
+        return Excel::download(new MailsExport(), 'mails.xlsx');
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function getPdf(Request $request)
+    {
+        $data = Mail::with('subject')->limit(100)->get();
+        $pdf = PDF::loadView('pdfs.mails', ['data'=>$data]);
+        //$pdf->save(storage_path().'_filename.pdf');
+        return $pdf->download('mails.pdf');
     }
 }

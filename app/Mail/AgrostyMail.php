@@ -32,7 +32,7 @@ class AgrostyMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.agrosty')
-            ->subject($this->mail->subject)
+            ->subject($this->mail->subject->desc)
             ->with([
                 'mail' => $this->mail
             ]);

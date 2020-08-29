@@ -1,13 +1,36 @@
 @csrf
 
 <div class="form-group">
-    <label for="pwd">To email:</label>
-    <input required type="email" class="form-control" name="to" value="{{ isset($mail) ? $mail->to : '' }}">
+    <label for="pwd">Nombre:</label>
+    <input required type="text" class="form-control" name="from_name" value="{{ isset($mail) ? $mail->from_name : '' }}">
 </div>
+
+<div class="form-group">
+    <label for="pwd">Email:</label>
+    <input required type="email" class="form-control" name="from_email" value="{{ isset($mail) ? $mail->from_email : '' }}">
+</div>
+
 <div class="form-group">
     <label for="pwd">Subject:</label>
-    <input type="text" class="form-control" name="subject" value="{{ isset($mail) ? $mail->subject : '' }}">
+    <div class="form-group">
+        <select class="form-control" name="subject_id">
+            @if (!isset($mail))
+                @foreach($subjects as $subject)
+                <option value="{{ $subject->id }}">{{ $subject->desc }}</option>
+                @endforeach
+            @else
+                @foreach($subjects as $subject)
+                    @if($mail->subject_id == $subject->id)
+                        <option selected value="{{ $subject->id }}">{{ $subject->desc }}</option>
+                    @else
+                        <option value="{{ $subject->id }}">{{ $subject->desc }}</option>
+                    @endif
+                @endforeach
+            @endif
+        </select>
+    </div>
 </div>
+
 <div class="form-group">
     <label for="pwd">Body:</label>
     <textarea required class="form-control" style="resize: none" rows="5" name="body">{{ isset($mail) ? $mail->body : '' }}</textarea>

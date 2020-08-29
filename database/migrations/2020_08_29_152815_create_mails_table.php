@@ -15,11 +15,16 @@ class CreateMailsTable extends Migration
     {
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('subject_id');
             $table->string('to');
-            $table->string('subject')->nullable();
+            $table->string('from_name');
+            $table->string('from_email');
             $table->text('body');
+            $table->integer('spam_score')->nullable();
 
             $table->timestamps();
+
+            $table->foreign('subject_id')->references('id')->on('subjects');
         });
     }
 

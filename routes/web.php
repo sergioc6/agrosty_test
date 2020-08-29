@@ -13,5 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('mails/group', 'MailController@listGroup')->name('mails.list-group');
+Route::get('mails/{mailId}/send', 'MailController@sendEmail')->where('mailId', '[0-9]+')->name('mails.send');
+Route::get('mails/excel', 'MailController@getExcel')->name('mails.excel');
+Route::get('mails/pdf', 'MailController@getPdf')->name('mails.pdf');
+
 Route::resource('mails', 'MailController');
-Route::get('mails/{mailId}/send', 'MailController@sendEmail')->name('mails.send');

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/app.css')  }}">
     <script src="{{ asset('js/app.js') }}" defer></script>
 
-    <title>Agrosty</title>
+    <title>Agrosty Mails</title>
 </head>
 <body>
 
