@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AgrostyMail;
 use App\Models\Mail;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,6 @@ class MailController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
@@ -22,7 +22,6 @@ class MailController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function create()
@@ -32,7 +31,6 @@ class MailController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -46,7 +44,6 @@ class MailController extends Controller
 
     /**
      * Display the specified resource.
-     *
      * @param \App\Mail $mail
      * @return \Illuminate\Http\Response
      */
@@ -57,7 +54,6 @@ class MailController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
      * @param \App\Mail $mail
      * @return \Illuminate\Http\Response
      */
@@ -68,7 +64,6 @@ class MailController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      * @param \Illuminate\Http\Request $request
      * @param \App\Mail $mail
      * @return \Illuminate\Http\Response
@@ -92,5 +87,27 @@ class MailController extends Controller
         $mail->delete();
 
         return redirect()->action('MailController@index');
+    }
+
+    /**
+     * @param Request $request
+     * @param $mailId
+     */
+    public function sendEmail(Request $request, $mailId)
+    {
+        $mail = Mail::findOrFail($mailId);
+
+        \Illuminate\Support\Facades\Mail::to($mail->to)
+            ->send(new AgrostyMail($mail));
+
+        if (!$request->ajax()) {
+            return redirect()->action('MailController@index');
+        } else {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Mail sended!',
+                'data' => $mail
+            ], 200);
+        }
     }
 }

@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::resource('mails', 'MailController');
+Route::get('mails/{mailId}/send', 'MailController@sendEmail')->name('mails.send');

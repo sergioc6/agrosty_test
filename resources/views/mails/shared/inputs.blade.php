@@ -1,10 +1,6 @@
 @csrf
 
 <div class="form-group">
-    <label for="email">From email:</label>
-    <input required type="email" class="form-control" name="from" value="{{ isset($mail) ? $mail->from : '' }}">
-</div>
-<div class="form-group">
     <label for="pwd">To email:</label>
     <input required type="email" class="form-control" name="to" value="{{ isset($mail) ? $mail->to : '' }}">
 </div>
