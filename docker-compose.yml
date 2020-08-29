@@ -1,0 +1,19 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+services:
+
+  db:
+    image: mariadb:10.5.5
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: agrosty
+      MYSQL_ROOT_PASSWORD: example
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - 1025:1025
+      - 8025:8025
+
