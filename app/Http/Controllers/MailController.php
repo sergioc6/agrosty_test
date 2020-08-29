@@ -100,14 +100,14 @@ class MailController extends Controller
         \Illuminate\Support\Facades\Mail::to($mail->to)
             ->send(new AgrostyMail($mail));
 
-        if (!$request->ajax()) {
-            return redirect()->action('MailController@index');
-        } else {
+        if ($request->is('api/*')) {
             return response()->json([
                 'status' => 'success',
                 'message' => 'Mail sended!',
                 'data' => $mail
             ], 200);
+        } else {
+            return redirect()->action('MailController@index');
         }
     }
 }

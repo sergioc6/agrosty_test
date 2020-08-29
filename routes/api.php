@@ -14,4 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/mails/{mailId}/Send', 'MailController@sendEmail');
+Route::get('/mails/{mailId}/send', 'MailController@sendEmail')->name('api.mails.send');
+
