@@ -13,10 +13,9 @@
                 <td>Id:</td>
                 <td>{{$mail->id}}</td>
             </tr>
-
             <tr>
                 <td>Subject:</td>
-                <td>{{$mail->subject}}</td>
+                <td>{{$mail->subject->desc}}</td>
             </tr>
 
             <tr>
@@ -26,7 +25,7 @@
             </tbody>
         </table>
 
-        <a href="{{ route('mails.index') }}" class="btn btn-default">Go Back</a>
+        <a href="{{ route('mails.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Go back</a>
 
     </div>
 

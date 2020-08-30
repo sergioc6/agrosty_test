@@ -7,9 +7,9 @@
 
     <div class="container">
 
-        <a href="{{ route('mails.index') }}" class="btn btn-defailt">Go back</a>
+        <a href="{{ route('mails.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Go back</a>
         <br>
-        <label>Totales: {{ $totals }}</label>
+        <p class="font-weight-bold">Totales: {{ $totals }}</p>
 
         <div class="row">
             <table class="table">

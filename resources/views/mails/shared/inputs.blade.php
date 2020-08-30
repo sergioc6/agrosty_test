@@ -41,4 +41,4 @@
 @else
     <button type="submit" class="btn btn-primary">Create</button>
 @endif
-<a href="{{ route('mails.index') }}" class="btn btn-default">Go Back</a>
+<a href="{{ route('mails.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Go back</a>

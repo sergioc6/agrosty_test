@@ -9,9 +9,7 @@
 
         <form action="{{ route('mails.update', ['mail' => $mail]) }}" method="POST">
             @method('PUT')
-
             @include('mails.shared.inputs', ['mail' => $mail])
-
         </form>
 
     </div>
