@@ -1,0 +1,25 @@
+FROM php:7.4-fpm-alpine
+
+RUN apk update && apk add \
+    libzip-dev libmcrypt-dev libpng-dev libjpeg-turbo-dev \
+    libxml2-dev icu-dev postgresql-dev curl-dev libmemcached-dev \
+    vim unzip zip ca-certificates curl git composer
+
+RUN apk add --update --virtual build-dependencies build-base gcc \
+    wget autoconf dpkg-dev dpkg re2c
+
+RUN docker-php-source extract \
+    && docker-php-ext-install gd pdo_pgsql zip mysqli pdo pdo_mysql \
+    && docker-php-source delete
+
+RUN apk del build-dependencies && rm -rf /var/cache/apk/*
+
+WORKDIR /var/www/html
+
+COPY . /var/www/html
+
+RUN composer install
+
+RUN chmod -R 777 storage/
+
+RUN apk add tzdata && cp /usr/share/zoneinfo/America/Buenos_Aires /etc/localtime

@@ -1,0 +1,5 @@
+FROM nginx:1.19.0-alpine
+
+COPY ./docker/nginx.conf /etc/nginx/conf.d/default.conf
+
+RUN apk add tzdata && cp /usr/share/zoneinfo/America/Buenos_Aires /etc/localtime
