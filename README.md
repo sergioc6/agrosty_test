@@ -24,16 +24,24 @@ Levantar los servicios
 $ docker-compose up -d
 ```
 
-### Migraciones y Seeders
-
 Ingresar al container de la App
 ```sh
 $ docker-compose exec php sh
 ```
 
+Instalar dependencias
+```sh
+/var/www/html # composer install
+```
+
 Ejecutar migraciones y seeders
 ```sh
 /var/www/html # php artisan migrate:fresh --seed
+```
+
+Permisos
+```sh
+/var/www/html # chmod -R 777 storage/
 ```
 
 ## Links

@@ -16,10 +16,4 @@ RUN apk del build-dependencies && rm -rf /var/cache/apk/*
 
 WORKDIR /var/www/html
 
-COPY . /var/www/html
-
-RUN composer install
-
-RUN chmod -R 777 storage/
-
 RUN apk add tzdata && cp /usr/share/zoneinfo/America/Buenos_Aires /etc/localtime
