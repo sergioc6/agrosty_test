@@ -3,7 +3,7 @@
         @method('DELETE')
         @csrf
 
-        <a href="{{ route('mails.send', ['mailId' => $id]) }}" class="btn btn-primary"><i class="fa fa-reply" aria-hidden="true"></i> Send </a>
+        <button type="button" class="btn btn-primary btnSend"><i class="fa fa-reply" aria-hidden="true"></i> Send</button>
 
         <a href="{{ route('mails.show', ['mail' => $id]) }}" class="btn btn-dark"><i class="fa fa-envelope-open" aria-hidden="true"></i> Show </a>
 

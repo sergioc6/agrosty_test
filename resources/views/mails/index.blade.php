@@ -5,7 +5,9 @@
 
 @section('content')
 
-    @include('mails.actions')
+    @include('mails.shared.actions')
+
+    @include('mails.shared.messages')
 
     <div style="margin-top: 5px;">
         <table class="table">
@@ -21,11 +23,11 @@
             <tbody>
             @foreach($mails as $mail)
                 <tr>
-                    <th scope="row">{{ $mail->id }}</th>
+                    <td scope="row" class="id">{{ $mail->id }}</td>
                     <td>{{ $mail->to }}</td>
                     <td>{{ $mail->subject->desc }}</td>
                     <td>{{ $mail->created_at->format('d-m-Y') }}</td>
-                    <td>@include('mails.actions-list', ['id' => $mail->id])</td>
+                    <td>@include('mails.shared.actions-list', ['id' => $mail->id])</td>
                 </tr>
             @endforeach
             </tbody>
@@ -34,5 +36,7 @@
         {{ $mails->links() }}
 
     </div>
+
+    @include('mails.shared.modal-send')
 
 @endsection
